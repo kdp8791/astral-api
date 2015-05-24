@@ -1,4 +1,5 @@
 #! /bin/sh
 
-export ENV=dev
+. venv3/bin/activate
+export APP_SETTINGS="config.config.DevelopmentConfig"
 python3 astral.py

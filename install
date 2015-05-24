@@ -1,0 +1,8 @@
+#! /bin/sh
+
+sudo pip install virtualenv
+virtualenv venv3 -p python3
+. venv3/bin/activate
+sudo pip install -r requirements.txt
+mkdir log
+touch log/root.log

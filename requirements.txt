@@ -1,0 +1,8 @@
+flask
+flask-restful
+flask-pymongo
+webargs
+simple-crypt
+pycrypto
+cryptography
+PyJWT
