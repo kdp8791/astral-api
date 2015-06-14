@@ -2,16 +2,18 @@ import os
 import logging
 from flask import Flask, jsonify
 import config
-from astral.api.oauth import oauth_api
+#from astral.api.oauth import oauth_api
 from astral.api.user import user_api
-from astral.common import mongo
+from astral.common import mongo, bcrypt, mail
 from astral.validators.errors import AstralException
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 mongo.init_app(app)
+bcrypt.init_app(app)
+mail.init_app(app)
 
-app.register_blueprint(oauth_api)
+#app.register_blueprint(oauth_api)
 app.register_blueprint(user_api)
 
 file_handler = logging.FileHandler(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "log", "root.log")))

@@ -25,7 +25,7 @@ class GeneralServerException(AstralException):
 # BadRequest exception
 class BadRequestException(AstralException):
     status_code = 400
-    message = 'The requested resource is either not a valid resource or available at this moment.'
+    message = 'The requested resource is either not a valid resource unavailable at this moment.'
 
     def __init__(self, class_type=None, message=None):
         if message is not None:
@@ -62,12 +62,46 @@ class GeneralServerException(AstralException):
             self.message = message
         AstralException.__init__(self, self.message, self.status_code, type(self).__name__ if class_type is None else class_type)
 
-class AuthorizationFailed(BadRequestException):
-
+class UnauthorizedAccess(BadRequestException):
     def __init__(self, message):
         BadRequestException.__init__(self, type(self).__name__, message)
 
-class TokenFailed(BadRequestException):
+class ExpiredAuthorizationToken(BadRequestException):
+    def __init__(self, message):
+        BadRequestException.__init__(self, type(self).__name__, message)
 
+class InvalidAuthorizationToken(BadRequestException):
+    def __init__(self, message):
+        BadRequestException.__init__(self, type(self).__name__, message)
+
+class AlreadyConfirmedUser(BadRequestException):
+    def __init__(self, message):
+        BadRequestException.__init__(self, type(self).__name__, message)
+
+class InvalidConfirmationUri(BadRequestException):
+    def __init__(self, message):
+        BadRequestException.__init__(self, type(self).__name__, message)
+
+class InvalidConfirmationToken(BadRequestException):
+    def __init__(self, message):
+        BadRequestException.__init__(self, type(self).__name__, message)
+
+class ConfirmationUsed(BadRequestException):
+    def __init__(self, message):
+        BadRequestException.__init__(self, type(self).__name__, message)
+
+class PasswordMismatch(BadRequestException):
+    def __init__(self, message):
+        BadRequestException.__init__(self, type(self).__name__, message)
+
+class EmailTaken(BadRequestException):
+    def __init__(self, message):
+        BadRequestException.__init__(self, type(self).__name__, message)
+
+class UnrecognizedUser(BadRequestException):
+    def __init__(self, message):
+        BadRequestException.__init__(self, type(self).__name__, message)
+
+class UnverifiedUser(BadRequestException):
     def __init__(self, message):
         BadRequestException.__init__(self, type(self).__name__, message)

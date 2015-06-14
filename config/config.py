@@ -14,3 +14,11 @@ class DevelopmentConfig(Config):
     MONGO_HOST = 'localhost'
     MONGO_PORT = 27017
     MONGO_DBNAME = 'astral'
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    MAIL_DEBUG = True
+    MAIL_USERNAME = 'astral.api@gmail.com'
+    MAIL_PASSWORD = 'astralapi123'
+    MAIL_DEFAULT_SENDER = 'astral.api@gmail.com'

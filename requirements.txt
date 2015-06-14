@@ -1,6 +1,8 @@
 flask
 flask-restful
 flask-pymongo
+flask-bcrypt
+flask-mail
 webargs
 simple-crypt
 pycrypto

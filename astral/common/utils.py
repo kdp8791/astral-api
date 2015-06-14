@@ -5,28 +5,30 @@ import datetime
 import time
 import jwt
 from astral.common import dictionary
-from config import enc_key
 from urllib.parse import urlparse
 from Crypto.Random import random
 
 ASCII_CHARS = (string.ascii_letters + string.digits)
 
-# Encrypt
-def encrypt(obj):
-    return simplecrypt.encrypt(enc_key, obj)
+def jwt_encode(obj, key):
+    obj['iss'] = dictionary.ISSUER
+    return jwt.encode(obj, key, algorithm='HS256', headers={'typ': 'JWT'})
 
-# Decrypt
-def decrypt(obj):
-    return simplecrypt.decrypt(enc_key, obj)
-
-def jwt_encode(obj):
-    return jwt.encode(obj, enc_key, algorithm='HS256', headers={'typ': 'JWT'})
-
-def jwt_decode(obj):
-    return jwt.decode(obj, enc_key, issuer=dictionary.ISSUER, algorithms=['HS256'])
+def jwt_decode(obj, key):
+    return jwt.decode(obj, key, issuer=dictionary.ISSUER, algorithms=['HS256'])
 
 def five_minute_expire():
     return datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
+
+def one_month_expire():
+    return datetime.datetime.utcnow() + datetime.timedelta(days=30)
+
+def is_expired(dt):
+    print("current_time: {0}, dt: {1}", current_time(), dt)
+    return current_time() > dt
+
+def current_time():
+    return int(round(time.time()))
 
 def random_string(len):
     return ''.join([random.choice(ASCII_CHARS) for x in xrange(len)])
