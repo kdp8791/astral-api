@@ -19,6 +19,6 @@ class DevelopmentConfig(Config):
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     MAIL_DEBUG = True
-    MAIL_USERNAME = 'astral.api@gmail.com'
-    MAIL_PASSWORD = 'astralapi123'
-    MAIL_DEFAULT_SENDER = 'astral.api@gmail.com'
+    MAIL_USERNAME = ''
+    MAIL_PASSWORD = ''
+    MAIL_DEFAULT_SENDER = ''
