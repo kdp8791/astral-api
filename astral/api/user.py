@@ -1,5 +1,5 @@
 from astral.common import *
-from flask import Blueprint, jsonify, redirect, make_response
+from flask import Blueprint, jsonify, redirect, make_response, _request_ctx_stack
 from webargs.flaskparser import use_args
 from astral.validators.errors import *
 from astral.validators.user import *
@@ -43,23 +43,25 @@ def create(args):
 @use_args(update_args)
 @requires_auth
 def update(args):
+    current_user = utils.get_user()
     if args[constants.FIRST_NAME] is not None:
         current_user['firstName'] = args[constants.FIRST_NAME]
     if args[constants.LAST_NAME] is not None:
         current_user['lastName'] = args[constants.LAST_NAME]
+    if args[constants.PASSWORD] is None and args[constants.PASSWORD_CONF] is not None:
+        raise BadRequestException(None, 'Missing password.')
     if args[constants.PASSWORD] is not None and args[constants.PASSWORD_CONF] is None:
-        raise BadRequest('Missing confirmation password.')
+        raise BadRequestException(None, 'Missing confirmation password.')
     elif args[constants.PASSWORD] is not None and args[constants.PASSWORD_CONF] is not None and args[constants.OLD_PASSWORD] is None:
-        raise BadRequest('Missing old password.')
+        raise BadRequestException(None, 'Missing old password.')
     if args[constants.PASSWORD] is not None and args[constants.OLD_PASSWORD] is not None:
         if args[constants.PASSWORD] != args[constants.PASSWORD_CONF]:
             raise PasswordMismatch('Password provided do not match.')
         elif args[constants.OLD_PASSWORD] is not None:
-            if bcrypt.generate_password_hash(args[constants.OLD_PASSWORD], 12) == current_user['password']:
+            if bcrypt.check_password_hash(current_user['password'], args[constants.OLD_PASSWORD]):
                 current_user['password'] = bcrypt.generate_password_hash(args[constants.PASSWORD], 12)
             else:
-                raise BadRequest('User account is not valid.')
-    print(current_user)
+                raise BadRequestException(None, 'User account is not valid.')
     mongo.db.users.update({'_id': current_user['_id']}, {'$set': current_user}, upsert=False)
     return jsonify(updated=True)
 

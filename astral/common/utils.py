@@ -7,8 +7,12 @@ import jwt
 from astral.common import dictionary
 from urllib.parse import urlparse
 from Crypto.Random import random
+from flask import _request_ctx_stack
 
 ASCII_CHARS = (string.ascii_letters + string.digits)
+
+def get_user():
+    return getattr(_request_ctx_stack.top, 'current_user', None)
 
 def jwt_encode(obj, key):
     obj['iss'] = dictionary.ISSUER
